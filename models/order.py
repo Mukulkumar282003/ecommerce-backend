@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from database import Base
-
 
 class Order(Base):
     __tablename__ = "orders"
@@ -13,3 +13,8 @@ class Order(Base):
     total_amount = Column(Float)
 
     status = Column(String,default="pending")
+
+    user=relationship(
+        "User",
+        back_populates="orders"
+    )

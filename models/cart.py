@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+
 from database import Base
 
 
@@ -11,6 +13,17 @@ class Cart(Base):
         Integer,
         ForeignKey("users.id"),
         unique=True
+    )
+
+    user=relationship(
+        "User",
+        back_populates="carts"
+    )
+
+    items=relationship(
+        "CartItem",
+        back_populates="cart"
+        
     )
 
 
@@ -32,4 +45,14 @@ class CartItem(Base):
     quantity = Column(
         Integer,
         default=1
+    )
+
+    cart=relationship(
+        "Cart",
+        back_populates="items"
+    )
+
+    product=relationship(
+        "Product",
+        back_populates="cart_items"
     )
