@@ -23,8 +23,23 @@ def create_product(
     )
     return create_product_repository(db,new_product)
 
-def get_products(db:Session):
-    return get_all_products(db)
+def get_products(
+        db: Session,
+        page: int = 1,
+        limit: int = 10,
+        category: str | None = None,
+        search: str | None = None,
+        sort: str | None = None
+):    
+        return get_all_products(
+              db,
+              page,
+              limit,
+              category,
+              search,
+              sort
+        )    
+
 
 def get_product(
         db:Session,

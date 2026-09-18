@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 from models.order import Order
-from models.product import Product
 
 from repositories.order_repository import (
     create_order,
@@ -42,9 +41,7 @@ def place_order(
 
     for item in cart_items:
 
-        product = db.query(Product).filter(
-            Product.id == item.product_id
-        ).first()
+        product = item.product
 
         if product is None:
             return None

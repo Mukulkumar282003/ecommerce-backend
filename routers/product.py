@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends,HTTPException,UploadFile,File
+from fastapi import APIRouter,Depends,HTTPException,UploadFile,File,Query
 from pathlib import Path
 import shutil
 from database import get_db
@@ -17,14 +17,24 @@ router=APIRouter(
     tags=["Products"]
 )
 
-@router.get("", 
-response_model=list[ProductResponse])
+@router.get("")
 def get_products(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    category: str | None = None,
+    search: str | None = None,
+    sort: str | None = None,
     db=Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-
-    return get_products_service(db)
+    return get_products_service(
+        db,
+        page,
+        limit,
+        category,
+        search,
+        sort
+    )
 
 @router.post("",response_model=ProductResponse)
 def add_products(

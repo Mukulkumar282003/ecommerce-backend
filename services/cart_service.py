@@ -80,10 +80,7 @@ def get_my_cart(
     if cart is None:
         return []
 
-    return get_cart_items(
-        db,
-        cart.id
-    )
+    return cart.items
 
 
 def remove_from_cart(

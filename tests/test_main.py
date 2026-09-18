@@ -52,7 +52,7 @@ def test_add_to_cart():
     response = client.post(
         "/cart/add",
         params={
-            "product_id": 1,
+            "product_id": 5,
             "quantity": 2
         }
     )
@@ -62,7 +62,7 @@ def test_add_to_cart():
 
 def test_update_cart_quantity():
     response = client.put(
-        "/cart/update/1",
+        "/cart/update/5",
         params={
             "quantity": 5
         }
@@ -72,7 +72,7 @@ def test_update_cart_quantity():
 
 
 def test_remove_from_cart():
-    response = client.delete("/cart/remove/1")
+    response = client.delete("/cart/remove/5")
 
     assert response.status_code == 200
 
@@ -81,7 +81,7 @@ def test_create_order():
     add_response = client.post(
         "/cart/add",
         params={
-            "product_id": 1,
+            "product_id": 5,
             "quantity": 2
         }
     )
@@ -103,7 +103,7 @@ def test_get_order():
     add_response = client.post(
         "/cart/add",
         params={
-            "product_id": 1,
+            "product_id": 5,
             "quantity": 2
         }
     )
@@ -128,7 +128,7 @@ def test_update_order_status():
     add_response = client.post(
         "/cart/add",
         params={
-            "product_id": 1,
+            "product_id": 5,
             "quantity": 1
         }
     )
@@ -177,7 +177,7 @@ def test_customer_cannot_access_admin_orders():
 
 def test_customer_cannot_update_order_status():
     response=client.put(
-        "/orders/1/status",
+        "/orders/5/status",
         params={
             "status":"shipped"
         }
@@ -188,4 +188,73 @@ def test_customer_cannot_update_order_status():
 def test_order_not_found():
     response=client.get("/orders/999999")
 
-    assert response.status_code==404    
+    assert response.status_code==404   
+
+def test_product_pagination():
+    response = client.get(
+        "/products",
+        params={
+            "page": 1,
+            "limit": 2
+        }
+    )
+
+    assert response.status_code == 200
+    assert len(response.json()) <= 2
+
+
+def test_product_category_filter():
+    response = client.get(
+        "/products",
+        params={
+            "category": "Electronics"
+        }
+    )
+
+    assert response.status_code == 200
+
+    for product in response.json():
+        assert product["category"] == "Electronics"
+
+
+def test_product_search():
+    response = client.get(
+        "/products",
+        params={
+            "search": "phone"
+        }
+    )
+
+    assert response.status_code == 200
+
+    for product in response.json():
+        assert "phone" in product["name"].lower()
+
+
+def test_product_sort_price():
+    response = client.get(
+        "/products",
+        params={
+            "sort": "price"
+        }
+    )
+
+    assert response.status_code == 200
+
+    products = response.json()
+
+    prices = [product["price"] for product in products]
+
+    assert prices == sorted(prices)
+
+
+def test_product_invalid_pagination():
+    response = client.get(
+        "/products",
+        params={
+            "page": 0,
+            "limit": 101
+        }
+    )
+
+    assert response.status_code == 422    
