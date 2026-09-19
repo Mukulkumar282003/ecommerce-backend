@@ -9,7 +9,6 @@ from repositories.cart_repository import (
     create_cart,
     get_cart_item,
     create_cart_item,
-    get_cart_items,
     delete_cart_item,
     update_cart_item
 )
