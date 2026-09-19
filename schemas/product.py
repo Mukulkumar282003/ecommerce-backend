@@ -1,4 +1,4 @@
-from pydantic import BaseModel,Field
+from pydantic import BaseModel,Field,ConfigDict
 
 class ProductCreate(BaseModel):
     name:str=Field(min_length=2)
@@ -17,5 +17,5 @@ class ProductResponse(BaseModel):
     category:str
     image_url:str|None=None
 
-    class Config:
-        from_attributes=True
+    model_config=ConfigDict(from_attributes=True)
+        
