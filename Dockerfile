@@ -12,7 +12,8 @@ RUN pip install --no-cache-dir \
     passlib \
     bcrypt==4.0.1 \
     python-jose \
-    python-multipart
+    python-multipart\
+    email-validator
 
 EXPOSE 8000
 

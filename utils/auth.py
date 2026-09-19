@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt, JWTError
-from utils.jwt import SECRET_KEY, ALGORITHM
+from utils.config import SECRET_KEY,ALGORITHM
 from database import get_db
 from models.user import User
 

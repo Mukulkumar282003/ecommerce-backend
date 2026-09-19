@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.staticfiles import StaticFiles
 from utils.logger import logger
+from utils.config import APP_NAME,APP_VERSION
 from routers.product import router as product_router
 from routers.user import router as user_router
 from routers.cart import router as cart_router
@@ -10,8 +11,11 @@ from routers.order import router as order_router
 
 
 app=FastAPI(
-    title="E-commerce API",
-    version="1.0,0"   
+    title=APP_NAME,
+    description="Production-style E-commmerce backend API",
+    version=APP_VERSION,
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
 @app.on_event("startup")
@@ -59,3 +63,12 @@ app.include_router(order_router)
 @app.get("/")
 def home ():
     return{"message":"E-commerce API is running"}
+
+@app.get("/health",tags=["Health"]) 
+def health_check():
+    return {
+        "status":"healthy",
+        "service":"E-commerce API"
+    }
+
+
