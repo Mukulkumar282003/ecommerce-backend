@@ -3,7 +3,8 @@ from pathlib import Path
 import shutil
 from database import get_db
 from utils.auth import get_current_user,require_admin
-from schemas.product import ProductCreate,ProductResponse,ProductUpdate
+from schemas.product import ProductCreate,ProductResponse,ProductUpdate,ProductImageResponse
+from schemas.common import MessageResponse
 from services.product_service import (
     create_product,
     get_products as get_products_service,
@@ -78,15 +79,15 @@ def update_product(
         )
     return product
 
-@router.delete("/{product_id}")
+@router.delete("/{product_id}",response_model=MessageResponse)
 def delete_product(
     product_id:int,
     db=Depends(get_db),
     current_user=Depends(require_admin)
 ):
-    result=delete_product_service(db,product_id)
+    success=delete_product_service(db,product_id)
     
-    if not result:
+    if not success:
         raise HTTPException(
             status_code=404,
             detail="product not found"
@@ -95,7 +96,7 @@ def delete_product(
         "message":"product deleted successfully"
     }
 
-@router.post("/{product_id}/image")
+@router.post("/{product_id}/image",response_model=ProductImageResponse)
 async def upload_product_image(
     product_id: int,
     image: UploadFile = File(...),

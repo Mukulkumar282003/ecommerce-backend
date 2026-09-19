@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException,Query
+from schemas.common import MessageResponse
 
 from database import get_db
 from utils.auth import get_current_user
@@ -51,7 +52,7 @@ def view_my_cart(
     )
 
 
-@router.delete("/remove/{product_id}")
+@router.delete("/remove/{product_id}",response_model=MessageResponse)
 def remove_product_from_cart(
     product_id: int,
     db=Depends(get_db),
