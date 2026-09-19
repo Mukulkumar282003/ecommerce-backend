@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
-
+from utils.logger import logger
 from models.order import Order
-
 from repositories.order_repository import (
     create_order,
     get_orders_by_user,
@@ -57,6 +56,8 @@ def place_order(
     )
 
     order=create_order(db,new_order)
+
+    logger.info(f"Order created :order_id={order.id},user_id={user_id},total={total_amount}")
 
     clear_cart(db,cart.id)
 

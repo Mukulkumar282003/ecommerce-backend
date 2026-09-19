@@ -2,6 +2,7 @@ from fastapi import FastAPI,Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.staticfiles import StaticFiles
+from utils.logger import logger
 from routers.product import router as product_router
 from routers.user import router as user_router
 from routers.cart import router as cart_router
@@ -12,6 +13,11 @@ app=FastAPI(
     title="E-commerce API",
     version="1.0,0"   
 )
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("E-Commerce API started successfully")
+
 
 @app.exception_handler(SQLAlchemyError)
 async def database_exception_handler(

@@ -1,6 +1,7 @@
 
 from sqlalchemy.orm import Session
 from models.product import Product
+from utils.logger import logger
 from schemas.product import ProductCreate,ProductResponse,ProductUpdate
 from repositories.product_repository import(
       get_all_products,
@@ -21,7 +22,12 @@ def create_product(
         price=product_data.price,
         category=product_data.category
     )
-    return create_product_repository(db,new_product)
+
+    product=create_product_repository(db,new_product)
+
+    logger.info(f"Product created: id={product.id},name={product.name}")
+
+    return product
 
 def get_products(
         db: Session,
@@ -74,9 +80,13 @@ def delete_product(
 
     product=get_product_by_id(db,product_id)
 
-    if product is None: 
-            return False
+    if product is None:
+         logger.warning(f"Delete failed:product_id={product_id} not found")
+          
+         return False   
     
     delete_product_repository(db,product)
+
+    logger.info(f"Product deleted: id ={product_id}")
 
     return True

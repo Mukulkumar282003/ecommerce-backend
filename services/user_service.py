@@ -3,6 +3,7 @@ from models.user import User
 from schemas.user import UserCreate,UserLogin
 from utils.security import hash_password,verify_password
 from utils.jwt import create_access_token
+from utils.logger import logger
 from repositories.user_repository import (
     get_user_by_email,
     create_user
@@ -36,11 +37,18 @@ def login_user(db:Session,user_data:UserLogin):
     )
 
     if not password_correct:
+        logger.info(f"Login failed: email={user_data.email}")
+
         return None
-    
-    print("LOGIN USER:",user.username)
-    print("LOGIN EMAIL:",user.email)
-    print("LOGIN ROLE:",user.role)
+
+    logger.info(
+        f"User logged in: user_id={user.id},"
+        f"Username={user.username},"
+        f"email={user.email},"
+        f"role={user.role}"
+        
+    )
+        
     access_token=create_access_token(
         {
             "user_id":user.id,
