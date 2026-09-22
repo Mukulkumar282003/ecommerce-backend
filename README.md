@@ -1,25 +1,30 @@
 # E-Commerce Backend API
 
-A real-world E-Commerce Backend API built with FastAPI, SQLAlchemy and JWT Authentication.
+## About
+A production-style E-Commerce Backend API built using FastAPI and SQLAlchemy.
 
 ## Features
 
 - User Registration & Login
 - JWT Authentication
 - Password Hashing
-- Role-Based Access Control
+- Admin Authorization
 - Product CRUD
 - Product Image Upload
+- Pagination
+- Filtering
+- Searching
+- Sorting
 - Shopping Cart
 - Order Management
 - Order Status Management
-- Admin APIs
+- SQLAlchemy Relationships
 - Input Validation
-- Pagination, Filtering and Sorting
-- API Testing with Pytest
-- Docker Support
+- Error Handling
+- Logging
+- Pytest
+- Docker
 - Environment Variables
-- Service & Repository Architecture
 
 ## Tech Stack
 
@@ -29,26 +34,25 @@ A real-world E-Commerce Backend API built with FastAPI, SQLAlchemy and JWT Authe
 - SQLite
 - Pydantic
 - JWT
-- Passlib
 - Pytest
 - Docker
 
-## Project Structure
+## API Documentation
 
-```text
-ecommerce_backend/
-│
-├── main.py
-├── database.py
-├── Dockerfile
-├── docker-compose.yml
-├── .env
-│
-├── models/
-├── schemas/
-├── routers/
-├── services/
-├── repositories/
-├── utils/
-├── uploads/
-└── tests/
+Swagger:
+`/docs`
+
+ReDoc:
+`/redoc`
+
+## Health Check
+
+`GET /health`
+
+## Run Locally
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
