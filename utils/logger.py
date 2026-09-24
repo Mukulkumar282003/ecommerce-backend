@@ -17,4 +17,4 @@ logging.basicConfig(
     ]
 )
 
-logger = logging.getLogger("ecommerce_api")
+logger=logging.getLogger("ecommerce_api")

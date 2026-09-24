@@ -28,6 +28,8 @@ async def database_exception_handler(
     request: Request,
     exc: SQLAlchemyError
 ):
+    logger.error(f"Database error: {exc}")
+    
     return JSONResponse(
         status_code=500,
         content={
@@ -42,6 +44,8 @@ async def general_exception_handler(
     request: Request,
     exc: Exception
 ):
+    logger.error(f"Unexpected error:{exc}")
+
     return JSONResponse(
         status_code=500,
         content={
